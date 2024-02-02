@@ -11,14 +11,19 @@ class RecordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationItemInit()
+        configureStatusBar()
+        configureNavigationBar()
     }
     
     private func configureView() {
         
     }
     
-    private func navigationItemInit() {
+    private func configureStatusBar() {
+        //무슨얘긴지 모르겠음 - 최상단 바를 이야기하는걸까?
+    }
+    
+    private func configureNavigationBar() {
         let leftItem = UIBarButtonItem(
             title: "취소",
             style: .plain,
@@ -32,8 +37,12 @@ class RecordViewController: UIViewController {
             action: #selector(touchUpInsideRightButton)
         )
         
+        leftItem.tintColor = UIColor.white
+        rightItem.tintColor = UIColor.white
         navigationItem.leftBarButtonItem = leftItem
         navigationItem.rightBarButtonItem = rightItem
+        
+        navigationController?.isNavigationBarHidden = false
     }
     
     @objc private func touchUpInsideLeftButton() {

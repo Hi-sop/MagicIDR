@@ -11,10 +11,15 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureView()
+        configureNavigationColor()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        //navigationController?.isNavigationBarHidden = true
+        navigationController?.isNavigationBarHidden = true
+    }
+    
+    private func configureNavigationColor() {
+        navigationController?.navigationBar.backgroundColor = UIColor.black.withAlphaComponent(0.5)
     }
     
     private func configureView() {
