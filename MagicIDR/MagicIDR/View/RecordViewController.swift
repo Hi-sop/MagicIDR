@@ -15,6 +15,10 @@ class RecordViewController: UIViewController {
         configureNavigationBar()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        navigationController?.isToolbarHidden = true
+    }
+    
     private func configureView() {
         
     }
@@ -30,15 +34,16 @@ class RecordViewController: UIViewController {
             target: self,
             action: #selector(touchUpInsideLeftButton)
         )
+        leftItem.tintColor = UIColor.white
+        
         let rightItem = UIBarButtonItem(
             title: "자동/수동",
             style: .plain,
             target: self,
             action: #selector(touchUpInsideRightButton)
         )
-        
-        leftItem.tintColor = UIColor.white
         rightItem.tintColor = UIColor.white
+        
         navigationItem.leftBarButtonItem = leftItem
         navigationItem.rightBarButtonItem = rightItem
         
@@ -51,6 +56,8 @@ class RecordViewController: UIViewController {
     
     @objc private func touchUpInsideRightButton() {
         print("자동/수동 Click")
+        let preview = PreviewViewController()
+        self.navigationController?.pushViewController(preview, animated: true) //temp
     }
     
 }

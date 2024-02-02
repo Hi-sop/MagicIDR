@@ -45,6 +45,7 @@ class MainViewController: UIViewController {
         
         cameraButton.addTarget(self, action: #selector(touchUpInsideCameraButton), for: .touchUpInside)
         cameraButton.setBackgroundImage(UIImage(systemName: "camera.circle.fill"), for: .normal)
+        cameraButton.tintColor = UIColor.black.withAlphaComponent(0.5)
         
         return cameraButton
     }
