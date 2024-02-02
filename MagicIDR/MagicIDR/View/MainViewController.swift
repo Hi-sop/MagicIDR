@@ -13,25 +13,8 @@ class MainViewController: UIViewController {
         configureView()
     }
     
-    private func makeCameraButton() -> UIButton {
-        let cameraButton = UIButton()
-        cameraButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        cameraButton.addTarget(self, action: #selector(touchUpInsideCameraButton), for: .touchUpInside)
-        cameraButton.setBackgroundImage(UIImage(systemName: "camera.circle.fill"), for: .normal)
-        
-        return cameraButton
-    }
-    
-    private func makeTitleLabel() -> UILabel {
-        let titleLabel = UILabel()
-        
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        
-        titleLabel.text = "MagicIDR"
-        titleLabel.font = .systemFont(ofSize: 20, weight: .bold)
-        
-        return titleLabel
+    override func viewWillAppear(_ animated: Bool) {
+        //navigationController?.isNavigationBarHidden = true
     }
     
     private func configureView() {
@@ -49,13 +32,33 @@ class MainViewController: UIViewController {
             titleLabel.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             titleLabel.bottomAnchor.constraint(equalTo: cameraButton.topAnchor, constant: -10)
         ])
-
+    }
+    
+    private func makeCameraButton() -> UIButton {
+        let cameraButton = UIButton()
+        cameraButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        cameraButton.addTarget(self, action: #selector(touchUpInsideCameraButton), for: .touchUpInside)
+        cameraButton.setBackgroundImage(UIImage(systemName: "camera.circle.fill"), for: .normal)
+        
+        return cameraButton
     }
     
     @objc private func touchUpInsideCameraButton() {
         let recordViewController = RecordViewController()
         
-        self.navigationController?.pushViewController(recordViewController, animated: false)
+        self.navigationController?.pushViewController(recordViewController, animated: true)
+    }
+    
+    private func makeTitleLabel() -> UILabel {
+        let titleLabel = UILabel()
+        
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        
+        titleLabel.text = "MagicIDR"
+        titleLabel.font = .systemFont(ofSize: 20, weight: .bold)
+        
+        return titleLabel
     }
     
 }
