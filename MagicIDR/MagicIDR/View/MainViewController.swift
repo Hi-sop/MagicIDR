@@ -28,7 +28,7 @@ class MainViewController: UIViewController {
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         
-        titleLabel.text = "MagiclDR"
+        titleLabel.text = "MagicIDR"
         titleLabel.font = .systemFont(ofSize: 20, weight: .bold)
         
         return titleLabel
