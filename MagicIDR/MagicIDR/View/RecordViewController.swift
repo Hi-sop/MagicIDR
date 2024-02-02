@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  RecordViewController.swift
 //  MagicIDR
 //
 //  Created by Hisop on 2024/02/03.
@@ -7,13 +7,10 @@
 
 import UIKit
 
-class ViewController: UIViewController {
-
+class RecordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
+        
+        print("hello")
     }
-
-
 }
-
