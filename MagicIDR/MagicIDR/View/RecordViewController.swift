@@ -56,8 +56,8 @@ class RecordViewController: UIViewController {
     
     @objc private func touchUpInsideRightButton() {
         print("자동/수동 Click")
-        let preview = PreviewViewController()
-        self.navigationController?.pushViewController(preview, animated: true) //temp
+        let sample = SampleViewController()
+        self.navigationController?.pushViewController(sample, animated: true) //temp
     }
     
 }

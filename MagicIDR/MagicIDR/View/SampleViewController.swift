@@ -1,5 +1,5 @@
 //
-//  PreviewViewController.swift
+//  SampleViewController.swift
 //  MagicIDR
 //
 //  Created by Hisop on 2024/02/03.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PreviewViewController: UIViewController {
+class SampleViewController: UIViewController {
     override func viewDidLoad() {
         configureNavigationBar()
         configureToolBar()
@@ -16,13 +16,11 @@ class PreviewViewController: UIViewController {
     
     private func configureNavigationBar() {
         let leftItem = UIBarButtonItem(
-            title: "",
+            image: UIImage(systemName: "arrow.left"),
             style: .plain,
             target: self,
             action: #selector(touchUpInsideLeftButton)
         )
-        
-        leftItem.image = UIImage(systemName: "arrow.left")
         leftItem.tintColor = UIColor.white
         
         let centerItem = UILabel()
