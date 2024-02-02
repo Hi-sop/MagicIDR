@@ -9,9 +9,10 @@ import UIKit
 
 class SampleViewController: UIViewController {
     override func viewDidLoad() {
+        super.viewDidLoad()
+        
         configureNavigationBar()
         configureToolBar()
-        super.viewDidLoad()
     }
     
     private func configureNavigationBar() {
@@ -37,7 +38,10 @@ class SampleViewController: UIViewController {
         navigationController?.popViewController(animated: true)
     }
     
+    //마찬가지로 BarButtonItem 재활용 가능해보이고
     private func configureToolBar() {
+        //삭제시 바로 이전 이미지로 넘어가도록 변경해야하고,
+        //삭제했는데 이미지가 0개다 -> pop
         let leftItem = UIBarButtonItem(
             image: UIImage(systemName: "trash.fill"),
             style: .plain,
@@ -46,6 +50,7 @@ class SampleViewController: UIViewController {
         )
         leftItem.tintColor = UIColor.white
         
+        //회전기능 추가 필요
         let centerItem = UIBarButtonItem(
             title: "반시계",
             style: .plain,
@@ -57,8 +62,8 @@ class SampleViewController: UIViewController {
         let rightItem = UIBarButtonItem(
             image: UIImage(systemName: "crop"),
             style: .plain,
-            target: nil,
-            action: nil
+            target: self,
+            action: #selector(touchUpInsideCropButton)
         )
         rightItem.tintColor = UIColor.white
         
@@ -71,6 +76,11 @@ class SampleViewController: UIViewController {
         
         navigationController?.toolbar.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         navigationController?.isToolbarHidden = false
+    }
+    
+    @objc private func touchUpInsideCropButton() {
+        let repoint = RepointViewController()
+        self.navigationController?.pushViewController(repoint, animated: true)
     }
     
     

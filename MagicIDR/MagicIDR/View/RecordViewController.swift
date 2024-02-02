@@ -24,7 +24,7 @@ class RecordViewController: UIViewController {
     }
     
     private func configureStatusBar() {
-        //무슨얘긴지 모르겠음 - 최상단 바를 이야기하는걸까?
+        //무슨얘긴지 모르겠음 - 최상단 바?
     }
     
     private func configureNavigationBar() {
@@ -43,6 +43,7 @@ class RecordViewController: UIViewController {
             action: #selector(touchUpInsideRightButton)
         )
         rightItem.tintColor = UIColor.white
+        //BarButtonItem중복되는 느낌. 프로토콜 혹은 클래스로 만들어볼수도
         
         navigationItem.leftBarButtonItem = leftItem
         navigationItem.rightBarButtonItem = rightItem
