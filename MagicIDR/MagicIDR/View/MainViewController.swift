@@ -55,17 +55,17 @@ extension MainViewController {
     }
     
     @objc private func touchUpInsideCameraButton() {
-        //Camera버튼 클릭시 권한 확인 후 push
         AVCaptureDevice.requestAccess(for: .video) { [weak self] authorized in
             guard authorized else {
                 self?.authorizedAlert()
                 return
             }
+            
+            DispatchQueue.main.async {
+                let recordViewController = RecordViewController()
+                self?.navigationController?.pushViewController(recordViewController, animated: true)
+            }
         }
-        
-        let recordViewController = RecordViewController()
-        
-        self.navigationController?.pushViewController(recordViewController, animated: true)
     }
     
     private func authorizedAlert() {
@@ -81,7 +81,9 @@ extension MainViewController {
             guard let url = URL(string: UIApplication.openSettingsURLString) else {
                 return
             }
-            UIApplication.shared.open(url)
+            DispatchQueue.main.async {
+                UIApplication.shared.open(url)
+            }
         }
         
         let cancelAlertAction = UIAlertAction(
@@ -94,7 +96,9 @@ extension MainViewController {
         alert.addAction(settingAlertAction)
         alert.addAction(cancelAlertAction)
         
-        present(alert, animated: true)
+        DispatchQueue.main.async {
+            self.present(alert, animated: true)
+        }
     }
     
     private func makeTitleLabel() -> UILabel {
