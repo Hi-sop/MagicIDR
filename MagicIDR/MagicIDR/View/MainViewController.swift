@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MainViewController: UIViewController {
+final class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -39,7 +39,9 @@ class MainViewController: UIViewController {
             titleLabel.bottomAnchor.constraint(equalTo: cameraButton.topAnchor, constant: -10)
         ])
     }
-    
+}
+
+extension MainViewController {
     private func makeCameraButton() -> UIButton {
         let cameraButton = UIButton()
         cameraButton.translatesAutoresizingMaskIntoConstraints = false
