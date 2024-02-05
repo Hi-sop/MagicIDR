@@ -14,6 +14,7 @@ final class RecordViewController: UIViewController {
         
         //configureStatusBar()
         configureNavigationBar()
+        configureView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -34,7 +35,7 @@ final class RecordViewController: UIViewController {
     }
     
     private func configureView() {
-        
+        makeCameraView()
     }
     
     private func configureStatusBar() {
@@ -43,6 +44,46 @@ final class RecordViewController: UIViewController {
 }
 
 extension RecordViewController {
+    private func makeCameraView() {
+        let cameraView = UIView()
+        
+        view.addSubview(cameraView)
+        cameraView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate ([
+            cameraView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 0.8),
+            cameraView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
+            cameraView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            cameraView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+        ])
+        
+        DispatchQueue.global(qos: .background).async {
+            let captureSession = AVCaptureSession()
+            guard let backCamera = AVCaptureDevice.default(for: .video) else {
+                return
+            }
+            
+            do {
+                let input = try AVCaptureDeviceInput(device: backCamera)
+                captureSession.addInput(input)
+            } catch {
+                print(error.localizedDescription) //error별로 구분, 리턴
+                return
+            }
+            
+            DispatchQueue.main.async {
+                let videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+                videoPreviewLayer.videoGravity = .resizeAspectFill
+                videoPreviewLayer.frame = cameraView.layer.bounds
+                cameraView.layer.addSublayer(videoPreviewLayer)
+
+            }
+            
+            captureSession.startRunning()
+
+        }
+    }
+    
     private func makeBarButtonItem(title: String) -> UIBarButtonItem {
         let BarButtonItem = UIBarButtonItem(
             title: title,
