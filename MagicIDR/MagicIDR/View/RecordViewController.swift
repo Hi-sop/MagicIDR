@@ -7,16 +7,29 @@
 
 import UIKit
 
-class RecordViewController: UIViewController {
+final class RecordViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        configureStatusBar()
+        //configureStatusBar()
         configureNavigationBar()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.isToolbarHidden = true
+    }
+    
+    private func configureNavigationBar() {
+        let leftItem = makeBarButtonItem(title: "취소")
+        let rightItem = makeBarButtonItem(title: "자동/수동")
+        
+        leftItem.action = #selector(touchUpInsideLeftButton)
+        rightItem.action = #selector(touchUpInsideRightButton)
+        
+        navigationItem.leftBarButtonItem = leftItem
+        navigationItem.rightBarButtonItem = rightItem
+        
+        navigationController?.isNavigationBarHidden = false
     }
     
     private func configureView() {
@@ -26,29 +39,20 @@ class RecordViewController: UIViewController {
     private func configureStatusBar() {
         //무슨얘긴지 모르겠음 - 최상단 바?
     }
-    
-    private func configureNavigationBar() {
-        let leftItem = UIBarButtonItem(
-            title: "취소",
+}
+
+extension RecordViewController {
+    private func makeBarButtonItem(title: String) -> UIBarButtonItem {
+        let BarButtonItem = UIBarButtonItem(
+            title: title,
             style: .plain,
             target: self,
-            action: #selector(touchUpInsideLeftButton)
+            action: nil
         )
-        leftItem.tintColor = UIColor.white
         
-        let rightItem = UIBarButtonItem(
-            title: "자동/수동",
-            style: .plain,
-            target: self,
-            action: #selector(touchUpInsideRightButton)
-        )
-        rightItem.tintColor = UIColor.white
-        //BarButtonItem중복되는 느낌. 프로토콜 혹은 클래스로 만들어볼수도
+        BarButtonItem.tintColor = UIColor.white
         
-        navigationItem.leftBarButtonItem = leftItem
-        navigationItem.rightBarButtonItem = rightItem
-        
-        navigationController?.isNavigationBarHidden = false
+        return BarButtonItem
     }
     
     @objc private func touchUpInsideLeftButton() {
@@ -60,5 +64,4 @@ class RecordViewController: UIViewController {
         let sample = SampleViewController()
         self.navigationController?.pushViewController(sample, animated: true) //temp
     }
-    
 }
