@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import AVFoundation
 
 final class MainViewController: UIViewController {
     override func viewDidLoad() {
@@ -54,9 +55,46 @@ extension MainViewController {
     }
     
     @objc private func touchUpInsideCameraButton() {
+        //Camera버튼 클릭시 권한 확인 후 push
+        AVCaptureDevice.requestAccess(for: .video) { [weak self] authorized in
+            guard authorized else {
+                self?.authorizedAlert()
+                return
+            }
+        }
+        
         let recordViewController = RecordViewController()
         
         self.navigationController?.pushViewController(recordViewController, animated: true)
+    }
+    
+    private func authorizedAlert() {
+        let alert = UIAlertController(
+            title: "MagicIDR을 사용하기 위해 카메라 접근 권한이 필요합니다",
+            message: "설정 화면으로 이동하시겠습니까?", preferredStyle: .alert
+        )
+        
+        let settingAlertAction = UIAlertAction(
+            title: "설정으로 이동",
+            style: .default
+        ) { _ in
+            guard let url = URL(string: UIApplication.openSettingsURLString) else {
+                return
+            }
+            UIApplication.shared.open(url)
+        }
+        
+        let cancelAlertAction = UIAlertAction(
+            title: "취소",
+            style: .cancel
+        ) { _ in
+            alert.dismiss(animated: true)
+        }
+        
+        alert.addAction(settingAlertAction)
+        alert.addAction(cancelAlertAction)
+        
+        present(alert, animated: true)
     }
     
     private func makeTitleLabel() -> UILabel {
