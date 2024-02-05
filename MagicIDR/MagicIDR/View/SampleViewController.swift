@@ -15,6 +15,10 @@ class SampleViewController: UIViewController {
         configureToolBar()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.navigationController?.isNavigationBarHidden = false
+    }
+    
     private func configureNavigationBar() {
         let leftItem = UIBarButtonItem(
             image: UIImage(systemName: "arrow.left"),
