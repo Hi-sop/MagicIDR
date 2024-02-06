@@ -71,7 +71,11 @@ extension RecordViewController {
     
     private func configureCameraSession(cameraView: UIView) {
         DispatchQueue.global().async {
-            guard let backCamera = AVCaptureDevice.default(for: .video) else {
+            guard let backCamera = AVCaptureDevice.default(
+                .builtInWideAngleCamera,
+                for: .video,
+                position: .back
+            ) else {
                 return
             }
             
