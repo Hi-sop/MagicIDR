@@ -21,6 +21,10 @@ final class RecordViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.isToolbarHidden = true
+
+        DispatchQueue.global().async {
+            self.captureSession.startRunning()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -41,7 +45,7 @@ final class RecordViewController: UIViewController {
     }
     
     private func configureView() {
-        makeCameraView()
+        cameraViewInit()
     }
     
     private func configureStatusBar() {
@@ -50,11 +54,12 @@ final class RecordViewController: UIViewController {
 }
 
 extension RecordViewController {
-    private func makeCameraView() {
+    private func cameraViewInit() {
         let cameraView = UIView()
         
         view.addSubview(cameraView)
         cameraView.translatesAutoresizingMaskIntoConstraints = false
+        configureCameraSession(cameraView: cameraView)
         
         NSLayoutConstraint.activate ([
             cameraView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 0.8),
@@ -62,8 +67,10 @@ extension RecordViewController {
             cameraView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             cameraView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
         ])
-        
-        DispatchQueue.global(qos: .background).async {
+    }
+    
+    private func configureCameraSession(cameraView: UIView) {
+        DispatchQueue.global().async {
             guard let backCamera = AVCaptureDevice.default(for: .video) else {
                 return
             }
@@ -81,10 +88,7 @@ extension RecordViewController {
                 videoPreviewLayer.videoGravity = .resizeAspectFill
                 videoPreviewLayer.frame = cameraView.layer.bounds
                 cameraView.layer.addSublayer(videoPreviewLayer)
-
             }
-            
-            self.captureSession.startRunning()
         }
     }
     
