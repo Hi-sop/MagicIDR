@@ -9,6 +9,8 @@ import UIKit
 import AVFoundation
 
 final class RecordViewController: UIViewController {
+    let captureSession = AVCaptureSession()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -19,6 +21,10 @@ final class RecordViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.isToolbarHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        self.captureSession.stopRunning()
     }
     
     private func configureNavigationBar() {
@@ -58,29 +64,27 @@ extension RecordViewController {
         ])
         
         DispatchQueue.global(qos: .background).async {
-            let captureSession = AVCaptureSession()
             guard let backCamera = AVCaptureDevice.default(for: .video) else {
                 return
             }
             
             do {
                 let input = try AVCaptureDeviceInput(device: backCamera)
-                captureSession.addInput(input)
+                self.captureSession.addInput(input)
             } catch {
                 print(error.localizedDescription) //error별로 구분, 리턴
                 return
             }
             
             DispatchQueue.main.async {
-                let videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+                let videoPreviewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
                 videoPreviewLayer.videoGravity = .resizeAspectFill
                 videoPreviewLayer.frame = cameraView.layer.bounds
                 cameraView.layer.addSublayer(videoPreviewLayer)
 
             }
             
-            captureSession.startRunning()
-
+            self.captureSession.startRunning()
         }
     }
     
