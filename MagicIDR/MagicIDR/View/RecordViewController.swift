@@ -88,10 +88,18 @@ extension RecordViewController {
             }
             
             DispatchQueue.main.async {
+                let videoOutput = AVCaptureVideoDataOutput()
+                videoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as String : Int(kCVPixelFormatType_32BGRA)]
+                
+                videoOutput.setSampleBufferDelegate(self, queue: DispatchQueue.main)
+                self.captureSession.addOutput(videoOutput)
+                //delegate를 통해 처리하고
+                
                 let videoPreviewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
                 videoPreviewLayer.videoGravity = .resizeAspectFill
                 videoPreviewLayer.frame = cameraView.layer.bounds
                 cameraView.layer.addSublayer(videoPreviewLayer)
+                //프리뷰를 화면에 표시한다? 가능한가
             }
         }
     }
@@ -117,5 +125,11 @@ extension RecordViewController {
         print("자동/수동 Click")
         let sample = SampleViewController()
         self.navigationController?.pushViewController(sample, animated: true) //temp
+    }
+}
+
+extension RecordViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
+    func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+
     }
 }
