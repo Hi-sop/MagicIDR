@@ -8,6 +8,7 @@
 import UIKit
 import AVFoundation
 
+// MARK: - Configure / Init
 final class RecordViewController: UIViewController {
     private let captureSession = AVCaptureSession()
     private let detectorView = DetectorView()
@@ -50,9 +51,11 @@ final class RecordViewController: UIViewController {
     }
 }
 
+// MARK: - CameraView
 extension RecordViewController {
     private func cameraViewInit() {
         let cameraView = UIView()
+        
         configureCameraSession(cameraView: cameraView)
         
         view.addSubview(cameraView)
@@ -82,7 +85,7 @@ extension RecordViewController {
                 let input = try AVCaptureDeviceInput(device: backCamera)
                 self.captureSession.addInput(input)
             } catch {
-                print(error.localizedDescription) //error별로 구분, 리턴
+                print(error.localizedDescription)
                 return
             }
         }
@@ -93,7 +96,10 @@ extension RecordViewController {
             cameraView.layer.addSublayer(videoPreviewLayer)
         }
     }
-    
+}
+
+// MARK: - DetectorView
+extension RecordViewController {
     private func detectorViewInit() {
         
         
