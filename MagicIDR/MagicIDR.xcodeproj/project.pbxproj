@@ -15,6 +15,7 @@
 		B9D394592B6D4D500035D513 /* RecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D394582B6D4D500035D513 /* RecordViewController.swift */; };
 		B9D3945B2B6D4D720035D513 /* SampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D3945A2B6D4D720035D513 /* SampleViewController.swift */; };
 		B9D3945D2B6D4D850035D513 /* RepointViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D3945C2B6D4D850035D513 /* RepointViewController.swift */; };
+		B9E2EF2A2B74C86900E9E55B /* DetectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E2EF292B74C86900E9E55B /* DetectorView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		B9D394582B6D4D500035D513 /* RecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordViewController.swift; sourceTree = "<group>"; };
 		B9D3945A2B6D4D720035D513 /* SampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleViewController.swift; sourceTree = "<group>"; };
 		B9D3945C2B6D4D850035D513 /* RepointViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepointViewController.swift; sourceTree = "<group>"; };
+		B9E2EF292B74C86900E9E55B /* DetectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectorView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 		B9D394422B6D4C610035D513 /* MagicIDR */ = {
 			isa = PBXGroup;
 			children = (
+				B9E2EF282B74C83E00E9E55B /* Model */,
 				B9D394572B6D4D070035D513 /* View */,
 				B9D394432B6D4C610035D513 /* AppDelegate.swift */,
 				B9D394452B6D4C610035D513 /* SceneDelegate.swift */,
@@ -79,6 +82,14 @@
 				B9D3945C2B6D4D850035D513 /* RepointViewController.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		B9E2EF282B74C83E00E9E55B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				B9E2EF292B74C86900E9E55B /* DetectorView.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -156,6 +167,7 @@
 				B9D394462B6D4C610035D513 /* SceneDelegate.swift in Sources */,
 				B9D3945B2B6D4D720035D513 /* SampleViewController.swift in Sources */,
 				B9D3945D2B6D4D850035D513 /* RepointViewController.swift in Sources */,
+				B9E2EF2A2B74C86900E9E55B /* DetectorView.swift in Sources */,
 				B9D394592B6D4D500035D513 /* RecordViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

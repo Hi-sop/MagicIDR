@@ -9,12 +9,15 @@ import UIKit
 import AVFoundation
 
 final class RecordViewController: UIViewController {
-    let captureSession = AVCaptureSession()
+    private let captureSession = AVCaptureSession()
+    private var videoPreviewLayer: AVCaptureVideoPreviewLayer? = nil
+    private let detectorView = DetectorView()
+    let cameraView = UIView()
+    let detectorLayer = CAShapeLayer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //configureStatusBar()
         configureNavigationBar()
         configureView()
     }
@@ -46,26 +49,24 @@ final class RecordViewController: UIViewController {
     
     private func configureView() {
         cameraViewInit()
-    }
-    
-    private func configureStatusBar() {
-        //무슨얘긴지 모르겠음 - 최상단 바?
+        detectorViewInit()
     }
 }
 
 extension RecordViewController {
     private func cameraViewInit() {
-        let cameraView = UIView()
+        
+        cameraView.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(cameraView)
-        cameraView.translatesAutoresizingMaskIntoConstraints = false
         configureCameraSession(cameraView: cameraView)
         
         NSLayoutConstraint.activate ([
-            cameraView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 0.8),
+            //cameraView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 0.8),
             cameraView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
             cameraView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            cameraView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor)
+            cameraView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            cameraView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -80)
         ])
     }
     
@@ -79,6 +80,7 @@ extension RecordViewController {
                 return
             }
             
+            
             do {
                 let input = try AVCaptureDeviceInput(device: backCamera)
                 self.captureSession.addInput(input)
@@ -88,21 +90,44 @@ extension RecordViewController {
             }
             
             DispatchQueue.main.async {
-                let videoOutput = AVCaptureVideoDataOutput()
-                videoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as String : Int(kCVPixelFormatType_32BGRA)]
-                
-                videoOutput.setSampleBufferDelegate(self, queue: DispatchQueue.main)
-                self.captureSession.addOutput(videoOutput)
-                //delegate를 통해 처리하고
-                
-                let videoPreviewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
-                videoPreviewLayer.videoGravity = .resizeAspectFill
-                videoPreviewLayer.frame = cameraView.layer.bounds
-                cameraView.layer.addSublayer(videoPreviewLayer)
-                //프리뷰를 화면에 표시한다? 가능한가
+                self.videoPreviewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
+                self.videoPreviewLayer?.videoGravity = .resizeAspectFill
+                self.videoPreviewLayer?.frame = cameraView.layer.bounds
+
+                cameraView.layer.addSublayer(self.videoPreviewLayer ?? AVCaptureVideoPreviewLayer())
             }
         }
     }
+    
+    private func detectorViewInit() {
+        
+        
+        
+        let videoOutput = AVCaptureVideoDataOutput()
+        //videoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as String : Int(kCVPixelFormatType_32BGRA)]
+        
+        videoOutput.setSampleBufferDelegate(self, queue: DispatchQueue.main)
+        self.captureSession.addOutput(videoOutput)
+        
+        detectorView.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(detectorView)
+        detectorView.backgroundColor = UIColor.systemCyan.withAlphaComponent(0.5)
+        //detectorView.layer.addSublayer(detectorLayer)
+        //detectorLayer.frame = detectorView.frame
+        //detectorLayer.bounds = detectorView.bounds
+        
+        //요거 나름 성공적인데 상 하로 박스가 뛰쳐나옴
+        //detectorLayer.bounds = CGRect(x: 0, y: 80, width: detectorView.frame.width, height: detectorView.frame.height)
+        
+        NSLayoutConstraint.activate ([
+            //detectorView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 0.8),
+            detectorView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
+            detectorView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            detectorView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
+            detectorView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -80)
+        ])
+    }
+    
     
     private func makeBarButtonItem(title: String) -> UIBarButtonItem {
         let BarButtonItem = UIBarButtonItem(
@@ -130,6 +155,79 @@ extension RecordViewController {
 
 extension RecordViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-
+        
+        guard let buffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
+            return
+        }
+        
+        //connection.videoOrientation = .portraitUpsideDown
+        connection.videoOrientation = .portraitUpsideDown
+        connection.isVideoMirrored = true
+        
+        let ciImage = CIImage(cvImageBuffer: buffer)
+        
+        let context = CIContext()
+        
+        let detector = CIDetector(
+            ofType: CIDetectorTypeRectangle,
+            context: context,
+            options: [
+                //CIDetectorImageOrientation: CGImagePropertyOrientation.right,
+                CIDetectorAccuracy: CIDetectorAccuracyHigh
+            ]
+        )
+        
+        guard let feature = detector?.features(in: ciImage).first as? CIRectangleFeature else {
+            print("clear")
+            detectorView.isHidden = true
+            return
+        }
+        
+        detectorView.isHidden = false
+//        print(ciImage.extent.width)
+//        print(ciImage.extent.height)
+//    
+//        print(detectorView.frame.width)
+//        print(detectorView.frame.height)
+//        
+//        print("height: \(detectorView.frame.height)")
+//        print("layerHeight: \(detectorLayer.frame.height)")
+                
+        let widthRatio = view.frame.width / ciImage.extent.width
+        let heightRatio = view.frame.height / ciImage.extent.height
+//        print(widthRatio)
+//        print(heightRatio)
+        
+        let imageSize = ciImage.extent.size
+        
+        let transform = CGAffineTransform(
+            scaleX: widthRatio,
+            y: heightRatio
+        )
+     
+        
+        let path = UIBezierPath()
+        
+        let transformRect = feature.bounds.applying(transform)
+        let pathtemp = UIBezierPath(rect: transformRect)
+        
+//        detectorLayer.path = pathtemp.cgPath
+//        detectorLayer.fillColor = UIColor.clear.cgColor
+//        detectorLayer.strokeColor = UIColor.red.cgColor
+        //detectorView.setNeedsDisplay()
+        
+        //이런식으로 처리 가능은 하지만...! 무한하게 덮어씌운다! 그러니 미리 addsublayer를 한 후에!
+        //path값만 갱신한다면 되겠네..?
+        
+        detectorView.rectangleFeature = feature
+        detectorView.tempRect = transformRect
+        detectorView.widthRatio = widthRatio
+        detectorView.heightRatio = heightRatio
+        
+        //detectorView.drawLayer()
+        //detectorView.layoutIfNeeded()
+        detectorView.setNeedsDisplay()
+        
+//        detectorView.setNeedsDisplay()
     }
 }
