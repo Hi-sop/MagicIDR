@@ -12,6 +12,19 @@ import AVFoundation
 final class RecordViewController: UIViewController {
     private let captureSession = AVCaptureSession()
     private let detectorView = DetectorView()
+    private var timer: Timer? = nil
+    private var elapsedTime: TimeInterval = 0
+    private var autofind: Bool = true
+    
+    private var detectState: Bool = false {
+        didSet {
+            if detectState && autofind {
+                startTimer()
+            } else {
+                stopTimer()
+            }
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,6 +48,28 @@ final class RecordViewController: UIViewController {
     private func configureView() {
         cameraViewInit()
         detectorViewInit()
+    }
+}
+
+// MARK: - Timer
+extension RecordViewController {
+    private func startTimer() {
+        timer = Timer.scheduledTimer(withTimeInterval: 0.1, repeats: true) { [weak self] timer in
+            self?.elapsedTime += 0.1
+            
+            if let elapsedTime = self?.elapsedTime,
+               elapsedTime >= 1.5 {
+                
+                print("call Action")
+                self?.stopTimer()
+            }
+        }
+    }
+    
+    private func stopTimer() {
+        self.timer?.invalidate()
+        self.timer = nil
+        elapsedTime = 0
     }
 }
 
@@ -72,8 +107,10 @@ extension RecordViewController {
     
     @objc private func touchUpInsideRightButton() {
         print("자동/수동 Click")
-        let sample = SampleViewController()
-        self.navigationController?.pushViewController(sample, animated: true) //temp
+        self.autofind.toggle()
+        
+        //let sample = SampleViewController()
+        //self.navigationController?.pushViewController(sample, animated: true) //temp
     }
 }
 
@@ -149,7 +186,7 @@ extension RecordViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         connection.videoOrientation = .portraitUpsideDown
         connection.isVideoMirrored = true
-        
+                
         guard let buffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
             return
         }
@@ -166,10 +203,15 @@ extension RecordViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
         
         guard let feature = detector?.features(in: ciImage).first as? CIRectangleFeature else {
             detectorView.isHidden = true
+            detectState = false
             return
         }
+        
         detectorView.isHidden = false
-                
+        if detectState == false {
+            detectState = true
+        }
+        
         let widthRatio = view.frame.width / ciImage.extent.width
         let heightRatio = view.frame.height / ciImage.extent.height
         
