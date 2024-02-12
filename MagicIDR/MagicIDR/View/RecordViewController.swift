@@ -45,6 +45,29 @@ final class RecordViewController: UIViewController {
         navigationController?.isNavigationBarHidden = false
     }
     
+    private func makeBarButtonItem(title: String) -> UIBarButtonItem {
+        let BarButtonItem = UIBarButtonItem(
+            title: title,
+            style: .plain,
+            target: self,
+            action: nil
+        )
+        
+        BarButtonItem.tintColor = UIColor.white
+        
+        return BarButtonItem
+    }
+    
+    @objc private func touchUpInsideLeftButton() {
+        navigationController?.popViewController(animated: true)
+    }
+    
+    @objc private func touchUpInsideRightButton() {
+        print("자동/수동 Click")
+        let sample = SampleViewController()
+        self.navigationController?.pushViewController(sample, animated: true) //temp
+    }
+    
     private func configureView() {
         cameraViewInit()
         detectorViewInit()
@@ -101,56 +124,20 @@ extension RecordViewController {
 // MARK: - DetectorView
 extension RecordViewController {
     private func detectorViewInit() {
-        
-        
-        
         let videoOutput = AVCaptureVideoDataOutput()
-        //videoOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as String : Int(kCVPixelFormatType_32BGRA)]
         
         videoOutput.setSampleBufferDelegate(self, queue: DispatchQueue.main)
         self.captureSession.addOutput(videoOutput)
-        
-        detectorView.translatesAutoresizingMaskIntoConstraints = false
+           
         view.addSubview(detectorView)
-        detectorView.backgroundColor = UIColor.systemCyan.withAlphaComponent(0.5)
-        //detectorView.layer.addSublayer(detectorLayer)
-        //detectorLayer.frame = detectorView.frame
-        //detectorLayer.bounds = detectorView.bounds
-        
-        //요거 나름 성공적인데 상 하로 박스가 뛰쳐나옴
-        //detectorLayer.bounds = CGRect(x: 0, y: 80, width: detectorView.frame.width, height: detectorView.frame.height)
-        
+        detectorView.translatesAutoresizingMaskIntoConstraints = false
+
         NSLayoutConstraint.activate ([
-            //detectorView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 0.8),
             detectorView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
             detectorView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             detectorView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             detectorView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -80)
         ])
-    }
-    
-    
-    private func makeBarButtonItem(title: String) -> UIBarButtonItem {
-        let BarButtonItem = UIBarButtonItem(
-            title: title,
-            style: .plain,
-            target: self,
-            action: nil
-        )
-        
-        BarButtonItem.tintColor = UIColor.white
-        
-        return BarButtonItem
-    }
-    
-    @objc private func touchUpInsideLeftButton() {
-        navigationController?.popViewController(animated: true)
-    }
-    
-    @objc private func touchUpInsideRightButton() {
-        print("자동/수동 Click")
-        let sample = SampleViewController()
-        self.navigationController?.pushViewController(sample, animated: true) //temp
     }
 }
 
