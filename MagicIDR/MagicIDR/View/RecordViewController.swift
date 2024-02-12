@@ -18,7 +18,7 @@ final class RecordViewController: UIViewController {
     
     private var detectState: Bool = false {
         didSet {
-            if detectState && autofind {
+            if detectState {
                 startTimer()
             } else {
                 stopTimer()
@@ -49,6 +49,11 @@ final class RecordViewController: UIViewController {
         cameraViewInit()
         detectorViewInit()
     }
+    
+    private func pushSampleViewContoller() {
+        let sample = SampleViewController()
+        self.navigationController?.pushViewController(sample, animated: true) //temp
+    }
 }
 
 // MARK: - Timer
@@ -58,9 +63,9 @@ extension RecordViewController {
             self?.elapsedTime += 0.1
             
             if let elapsedTime = self?.elapsedTime,
-               elapsedTime >= 1.5 {
-                
-                print("call Action")
+               let autofind = self?.autofind,
+               elapsedTime >= 1.5 && autofind {
+                self?.pushSampleViewContoller()
                 self?.stopTimer()
             }
         }
@@ -106,11 +111,7 @@ extension RecordViewController {
     }
     
     @objc private func touchUpInsideRightButton() {
-        print("자동/수동 Click")
         self.autofind.toggle()
-        
-        //let sample = SampleViewController()
-        //self.navigationController?.pushViewController(sample, animated: true) //temp
     }
 }
 
