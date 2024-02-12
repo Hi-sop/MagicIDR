@@ -147,79 +147,33 @@ extension RecordViewController {
 
 extension RecordViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        connection.videoOrientation = .portraitUpsideDown
+        connection.isVideoMirrored = true
         
         guard let buffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
             return
         }
         
-        //connection.videoOrientation = .portraitUpsideDown
-        connection.videoOrientation = .portraitUpsideDown
-        connection.isVideoMirrored = true
-        
         let ciImage = CIImage(cvImageBuffer: buffer)
-        
-        let context = CIContext()
         
         let detector = CIDetector(
             ofType: CIDetectorTypeRectangle,
-            context: context,
+            context: CIContext(),
             options: [
-                //CIDetectorImageOrientation: CGImagePropertyOrientation.right,
                 CIDetectorAccuracy: CIDetectorAccuracyHigh
             ]
         )
         
         guard let feature = detector?.features(in: ciImage).first as? CIRectangleFeature else {
-            print("clear")
             detectorView.isHidden = true
             return
         }
-        
         detectorView.isHidden = false
-//        print(ciImage.extent.width)
-//        print(ciImage.extent.height)
-//    
-//        print(detectorView.frame.width)
-//        print(detectorView.frame.height)
-//        
-//        print("height: \(detectorView.frame.height)")
-//        print("layerHeight: \(detectorLayer.frame.height)")
                 
         let widthRatio = view.frame.width / ciImage.extent.width
         let heightRatio = view.frame.height / ciImage.extent.height
-//        print(widthRatio)
-//        print(heightRatio)
         
-        let imageSize = ciImage.extent.size
-        
-        let transform = CGAffineTransform(
-            scaleX: widthRatio,
-            y: heightRatio
-        )
-     
-        
-        let path = UIBezierPath()
-        
-        let transformRect = feature.bounds.applying(transform)
-        let pathtemp = UIBezierPath(rect: transformRect)
-        
-//        detectorLayer.path = pathtemp.cgPath
-//        detectorLayer.fillColor = UIColor.clear.cgColor
-//        detectorLayer.strokeColor = UIColor.red.cgColor
-        //detectorView.setNeedsDisplay()
-        
-        //이런식으로 처리 가능은 하지만...! 무한하게 덮어씌운다! 그러니 미리 addsublayer를 한 후에!
-        //path값만 갱신한다면 되겠네..?
-        
-        detectorView.rectangleFeature = feature
-        detectorView.tempRect = transformRect
-        detectorView.widthRatio = widthRatio
-        detectorView.heightRatio = heightRatio
-        
-        //detectorView.drawLayer()
-        //detectorView.layoutIfNeeded()
+        detectorView.setRectangle(rectangleFeature: feature, widthRatio: widthRatio, heightRatio: heightRatio)
         detectorView.setNeedsDisplay()
-        
-//        detectorView.setNeedsDisplay()
     }
 }
