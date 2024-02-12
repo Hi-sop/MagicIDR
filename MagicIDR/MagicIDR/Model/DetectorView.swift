@@ -17,8 +17,12 @@ final class DetectorView: UIView {
 
         let path = makePath()
     
-        UIColor.red.setStroke()
+        UIColor().mainColor.setFill()
+        UIColor().subColor.setStroke()
+        path.lineWidth = 5
+        
         path.stroke()
+        path.fill()
     }
         
     private func makePath() -> UIBezierPath {
