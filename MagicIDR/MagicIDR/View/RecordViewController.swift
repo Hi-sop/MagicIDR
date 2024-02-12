@@ -31,7 +31,15 @@ final class RecordViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         self.captureSession.stopRunning()
     }
-    
+
+    private func configureView() {
+        cameraViewInit()
+        detectorViewInit()
+    }
+}
+
+// MARK: - Navigation
+extension RecordViewController {
     private func configureNavigationBar() {
         let leftItem = makeBarButtonItem(title: "취소")
         let rightItem = makeBarButtonItem(title: "자동/수동")
@@ -66,11 +74,6 @@ final class RecordViewController: UIViewController {
         print("자동/수동 Click")
         let sample = SampleViewController()
         self.navigationController?.pushViewController(sample, animated: true) //temp
-    }
-    
-    private func configureView() {
-        cameraViewInit()
-        detectorViewInit()
     }
 }
 
@@ -130,6 +133,7 @@ extension RecordViewController {
         self.captureSession.addOutput(videoOutput)
            
         view.addSubview(detectorView)
+        detectorView.backgroundColor = UIColor.clear
         detectorView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate ([
