@@ -10,10 +10,7 @@ import AVFoundation
 
 final class RecordViewController: UIViewController {
     private let captureSession = AVCaptureSession()
-    private var videoPreviewLayer: AVCaptureVideoPreviewLayer? = nil
     private let detectorView = DetectorView()
-    let cameraView = UIView()
-    let detectorLayer = CAShapeLayer()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,14 +52,13 @@ final class RecordViewController: UIViewController {
 
 extension RecordViewController {
     private func cameraViewInit() {
-        
-        cameraView.translatesAutoresizingMaskIntoConstraints = false
-        
-        view.addSubview(cameraView)
+        let cameraView = UIView()
         configureCameraSession(cameraView: cameraView)
         
+        view.addSubview(cameraView)
+        cameraView.translatesAutoresizingMaskIntoConstraints = false
+        
         NSLayoutConstraint.activate ([
-            //cameraView.heightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.heightAnchor, multiplier: 0.8),
             cameraView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 40),
             cameraView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             cameraView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
@@ -71,6 +67,8 @@ extension RecordViewController {
     }
     
     private func configureCameraSession(cameraView: UIView) {
+        let videoPreviewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
+        
         DispatchQueue.global().async {
             guard let backCamera = AVCaptureDevice.default(
                 .builtInWideAngleCamera,
@@ -80,7 +78,6 @@ extension RecordViewController {
                 return
             }
             
-            
             do {
                 let input = try AVCaptureDeviceInput(device: backCamera)
                 self.captureSession.addInput(input)
@@ -88,14 +85,12 @@ extension RecordViewController {
                 print(error.localizedDescription) //error별로 구분, 리턴
                 return
             }
-            
-            DispatchQueue.main.async {
-                self.videoPreviewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
-                self.videoPreviewLayer?.videoGravity = .resizeAspectFill
-                self.videoPreviewLayer?.frame = cameraView.layer.bounds
-
-                cameraView.layer.addSublayer(self.videoPreviewLayer ?? AVCaptureVideoPreviewLayer())
-            }
+        }
+        
+        DispatchQueue.main.async {
+            videoPreviewLayer.videoGravity = .resizeAspectFill
+            videoPreviewLayer.frame = cameraView.layer.bounds
+            cameraView.layer.addSublayer(videoPreviewLayer)
         }
     }
     
