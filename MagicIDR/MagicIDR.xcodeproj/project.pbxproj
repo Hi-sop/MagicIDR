@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		B9BB87492B7A00C000B02523 /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9BB87482B7A00C000B02523 /* UIColor+.swift */; };
-		B9BB874B2B7AFB3F00B02523 /* UserDefaultManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9BB874A2B7AFB3F00B02523 /* UserDefaultManager.swift */; };
 		B9BB874D2B7AFB6600B02523 /* PhotoData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9BB874C2B7AFB6600B02523 /* PhotoData.swift */; };
 		B9D394442B6D4C610035D513 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D394432B6D4C610035D513 /* AppDelegate.swift */; };
 		B9D394462B6D4C610035D513 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D394452B6D4C610035D513 /* SceneDelegate.swift */; };
@@ -23,7 +22,6 @@
 
 /* Begin PBXFileReference section */
 		B9BB87482B7A00C000B02523 /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
-		B9BB874A2B7AFB3F00B02523 /* UserDefaultManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultManager.swift; sourceTree = "<group>"; };
 		B9BB874C2B7AFB6600B02523 /* PhotoData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoData.swift; sourceTree = "<group>"; };
 		B9D394402B6D4C610035D513 /* MagicIDR.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MagicIDR.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9D394432B6D4C610035D513 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -95,7 +93,6 @@
 			children = (
 				B9E2EF292B74C86900E9E55B /* DetectorView.swift */,
 				B9BB87482B7A00C000B02523 /* UIColor+.swift */,
-				B9BB874A2B7AFB3F00B02523 /* UserDefaultManager.swift */,
 				B9BB874C2B7AFB6600B02523 /* PhotoData.swift */,
 			);
 			path = Model;
@@ -178,7 +175,6 @@
 				B9D3945B2B6D4D720035D513 /* SampleViewController.swift in Sources */,
 				B9D3945D2B6D4D850035D513 /* RepointViewController.swift in Sources */,
 				B9BB874D2B7AFB6600B02523 /* PhotoData.swift in Sources */,
-				B9BB874B2B7AFB3F00B02523 /* UserDefaultManager.swift in Sources */,
 				B9E2EF2A2B74C86900E9E55B /* DetectorView.swift in Sources */,
 				B9D394592B6D4D500035D513 /* RecordViewController.swift in Sources */,
 			);
