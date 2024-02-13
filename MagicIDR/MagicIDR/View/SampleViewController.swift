@@ -8,6 +8,8 @@
 import UIKit
 
 class SampleViewController: UIViewController {
+    private var photoDataManager: PhotoDataManager?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -17,6 +19,10 @@ class SampleViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         self.navigationController?.isNavigationBarHidden = false
+    }
+    
+    func configurePhotoManager(_ manager: PhotoDataManager) {
+        photoDataManager = manager
     }
     
     private func configureNavigationBar() {

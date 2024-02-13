@@ -9,6 +9,8 @@ import UIKit
 import AVFoundation
 
 final class MainViewController: UIViewController {
+    private let photoDataManager = PhotoDataManager()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -62,10 +64,13 @@ extension MainViewController {
                 return
             }
             
-            DispatchQueue.main.async {
-                let recordViewController = RecordViewController()
-                self?.navigationController?.pushViewController(recordViewController, animated: true)
+            let recordViewController = RecordViewController()
+            guard let photoDataManager = self?.photoDataManager else {
+                return
             }
+            
+            recordViewController.configurePhotoManager(photoDataManager)
+            self?.navigationController?.pushViewController(recordViewController, animated: true)
         }
     }
     

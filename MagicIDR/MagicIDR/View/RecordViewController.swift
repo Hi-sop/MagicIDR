@@ -10,6 +10,7 @@ import AVFoundation
 
 // MARK: - Configure / Init
 final class RecordViewController: UIViewController {
+    private var photoDataManager: PhotoDataManager? = nil
     private let captureSession = AVCaptureSession()
     private let detectorView = DetectorView()
     private var timer: Timer? = nil
@@ -52,8 +53,17 @@ final class RecordViewController: UIViewController {
     }
     
     private func pushSampleViewContoller() {
-        let sample = SampleViewController()
-        self.navigationController?.pushViewController(sample, animated: true) //temp
+        let sampleViewContoller = RecordViewController()
+        guard let photoDataManager = self.photoDataManager else {
+            return
+        }
+        
+        sampleViewContoller.configurePhotoManager(photoDataManager)
+        self.navigationController?.pushViewController(sampleViewContoller, animated: true) //temp
+    }
+    
+    func configurePhotoManager(_ manager: PhotoDataManager) {
+        photoDataManager = manager
     }
 }
 

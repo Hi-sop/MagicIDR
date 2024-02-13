@@ -23,3 +23,15 @@ final class PhotoData {
         self.cutPoint = cutPoint
     }
 }
+
+final class PhotoDataManager {
+    private var photoDataArray: [PhotoData] = []
+    
+    func addPhotoData(data: PhotoData) {
+        photoDataArray.append(data)
+    }
+    
+    func removePhotoData(at: Int) {
+        photoDataArray.remove(at: at)
+    }
+}
