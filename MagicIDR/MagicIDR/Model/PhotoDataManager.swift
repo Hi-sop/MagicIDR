@@ -5,7 +5,7 @@
 //  Created by Hisop on 2024/02/13.
 //
 
-import Foundation
+import CoreImage
 
 struct CutPoint {
     let topLeft: CGPoint
@@ -15,10 +15,10 @@ struct CutPoint {
 }
 
 final class PhotoData {
-    let image: Data
+    let image: CIImage
     let cutPoint: CutPoint
     
-    init(image: Data, cutPoint: CutPoint) {
+    init(image: CIImage, cutPoint: CutPoint) {
         self.image = image
         self.cutPoint = cutPoint
     }
@@ -33,5 +33,9 @@ final class PhotoDataManager {
     
     func removePhotoData(at: Int) {
         photoDataArray.remove(at: at)
+    }
+    
+    func loadPhotoData() -> [PhotoData] {
+        return photoDataArray
     }
 }

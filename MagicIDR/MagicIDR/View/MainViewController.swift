@@ -64,13 +64,15 @@ extension MainViewController {
                 return
             }
             
-            let recordViewController = RecordViewController()
-            guard let photoDataManager = self?.photoDataManager else {
-                return
+            DispatchQueue.main.async {
+                let recordViewController = RecordViewController()
+                guard let photoDataManager = self?.photoDataManager else {
+                    return
+                }
+                
+                recordViewController.configurePhotoManager(photoDataManager)
+                self?.navigationController?.pushViewController(recordViewController, animated: true)
             }
-            
-            recordViewController.configurePhotoManager(photoDataManager)
-            self?.navigationController?.pushViewController(recordViewController, animated: true)
         }
     }
     

@@ -10,9 +10,12 @@ import AVFoundation
 
 // MARK: - Configure / Init
 final class RecordViewController: UIViewController {
-    private var photoDataManager: PhotoDataManager? = nil
     private let captureSession = AVCaptureSession()
     private let detectorView = DetectorView()
+    
+    private var photoDataManager: PhotoDataManager? = nil
+    private var tempPhotoData: PhotoData? = nil
+    
     private var timer: Timer? = nil
     private var elapsedTime: TimeInterval = 0
     private var autofind: Bool = true
@@ -53,7 +56,7 @@ final class RecordViewController: UIViewController {
     }
     
     private func pushSampleViewContoller() {
-        let sampleViewContoller = RecordViewController()
+        let sampleViewContoller = SampleViewController()
         guard let photoDataManager = self.photoDataManager else {
             return
         }
@@ -76,6 +79,12 @@ extension RecordViewController {
             if let elapsedTime = self?.elapsedTime,
                let autofind = self?.autofind,
                elapsedTime >= 1.5 && autofind {
+                
+                guard let photoData = self?.tempPhotoData else {
+                    return
+                }
+                
+                self?.photoDataManager?.addPhotoData(data: photoData)
                 self?.pushSampleViewContoller()
                 self?.stopTimer()
             }
@@ -259,6 +268,15 @@ extension RecordViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
             detectState = false
             return
         }
+        
+        let cutPoint = CutPoint(
+            topLeft: feature.topLeft,
+            topRight: feature.topRight,
+            bottomLeft: feature.bottomLeft,
+            bottomRight: feature.bottomRight
+        )
+        
+        self.tempPhotoData = PhotoData(image: ciImage, cutPoint: cutPoint)
         
         detectorView.isHidden = false
         if detectState == false {
