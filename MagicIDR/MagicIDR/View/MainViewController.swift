@@ -18,6 +18,7 @@ final class MainViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         navigationController?.isNavigationBarHidden = true
+        navigationController?.isToolbarHidden = true
     }
     
     private func configureNavigationColor() {
