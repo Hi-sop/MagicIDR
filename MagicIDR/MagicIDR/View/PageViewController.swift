@@ -120,9 +120,7 @@ extension PageViewController {
             return
         }
         
-        guard let rotateImage = uiImage.rotateLeftClock(),
-              let ciImage = rotateImage.ciImage
-        else {
+        guard let rotateImage = uiImage.rotateLeftClock() else {
             return
         }
         imageView.image = rotateImage
@@ -130,6 +128,11 @@ extension PageViewController {
         guard let data = photoDataManager?.loadPhotoData() else {
             return
         }
+        
+        guard let ciImage = rotateImage.ciImage else {
+            return
+        }
+        
         data[nowIndex].image = ciImage
     }
     

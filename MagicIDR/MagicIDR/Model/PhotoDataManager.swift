@@ -17,10 +17,14 @@ struct CutPoint {
 final class PhotoData {
     var image: CIImage
     let cutPoint: CutPoint
+    let widthRatio: CGFloat
+    let heightRatio: CGFloat
     
-    init(image: CIImage, cutPoint: CutPoint) {
+    init(image: CIImage, cutPoint: CutPoint, widthRatio: CGFloat, heightRatio: CGFloat) {
         self.image = image
         self.cutPoint = cutPoint
+        self.widthRatio = widthRatio
+        self.heightRatio = heightRatio
     }
 }
 

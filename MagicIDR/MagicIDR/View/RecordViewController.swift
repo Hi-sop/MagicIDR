@@ -276,15 +276,17 @@ extension RecordViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
             bottomRight: feature.bottomRight
         )
         
-        self.tempPhotoData = PhotoData(image: ciImage, cutPoint: cutPoint)
+        let widthRatio = view.frame.width / ciImage.extent.width
+        let heightRatio = view.frame.height / ciImage.extent.height
+        
+        self.tempPhotoData = PhotoData(image: ciImage, cutPoint: cutPoint, widthRatio: widthRatio, heightRatio: heightRatio)
         
         detectorView.isHidden = false
         if detectState == false {
             detectState = true
         }
         
-        let widthRatio = view.frame.width / ciImage.extent.width
-        let heightRatio = view.frame.height / ciImage.extent.height
+
         
         detectorView.setRectangle(rectangleFeature: feature, widthRatio: widthRatio, heightRatio: heightRatio)
         detectorView.setNeedsDisplay()
