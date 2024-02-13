@@ -8,10 +8,14 @@
 import UIKit
 
 final class DetectorView: UIView {
-    private var rectangleFeature: CIRectangleFeature?
     private var widthRatio: CGFloat?
     private var heightRatio: CGFloat?
     private var correction: CGFloat = 115
+    
+    private var topLeft: CGPoint = CGPoint()
+    private var topRight: CGPoint = CGPoint()
+    private var bottomLeft: CGPoint = CGPoint()
+    private var bottomRight: CGPoint = CGPoint()
     
     override func draw(_ rect: CGRect) {
         super.draw(rect)
@@ -28,33 +32,6 @@ final class DetectorView: UIView {
         
     private func makePath() -> UIBezierPath {
         let path = UIBezierPath()
-        
-        guard let rectangleFeature = rectangleFeature,
-              let widthRatio = widthRatio,
-              let heightRatio = heightRatio
-        else {
-            return path
-        }
-        
-        let topLeft = CGPoint(
-            x: rectangleFeature.topLeft.x * widthRatio,
-            y: correctionPoint(point: rectangleFeature.topLeft.y * heightRatio)
-        )
-        
-        let topRight = CGPoint(
-            x: rectangleFeature.topRight.x * widthRatio,
-            y: correctionPoint(point: rectangleFeature.topRight.y * heightRatio)
-        )
-        
-        let bottomLeft = CGPoint(
-            x: rectangleFeature.bottomLeft.x * widthRatio,
-            y: correctionPoint(point: rectangleFeature.bottomLeft.y * heightRatio)
-        )
-        
-        let bottomRight = CGPoint(
-            x: rectangleFeature.bottomRight.x * widthRatio,
-            y: correctionPoint(point: rectangleFeature.bottomRight.y * heightRatio)
-        )
         
         path.move(to: topLeft)
         path.addLine(to: topRight)
@@ -80,8 +57,50 @@ final class DetectorView: UIView {
     }
     
     func setRectangle(rectangleFeature: CIRectangleFeature, widthRatio: CGFloat, heightRatio: CGFloat) {
-        self.rectangleFeature = rectangleFeature
         self.widthRatio = widthRatio
         self.heightRatio = heightRatio
+        
+        topLeft = CGPoint(
+            x: rectangleFeature.topLeft.x * widthRatio,
+            y: correctionPoint(point: rectangleFeature.topLeft.y * heightRatio)
+        )
+        
+        topRight = CGPoint(
+            x: rectangleFeature.topRight.x * widthRatio,
+            y: correctionPoint(point: rectangleFeature.topRight.y * heightRatio)
+        )
+        
+        bottomLeft = CGPoint(
+            x: rectangleFeature.bottomLeft.x * widthRatio,
+            y: correctionPoint(point: rectangleFeature.bottomLeft.y * heightRatio)
+        )
+        
+        bottomRight = CGPoint(
+            x: rectangleFeature.bottomRight.x * widthRatio,
+            y: correctionPoint(point: rectangleFeature.bottomRight.y * heightRatio)
+        )
     }
+    
+    func setData(data: PhotoData) {
+        topLeft = CGPoint(
+            x: data.cutPoint.topLeft.x * (data.widthRatio),
+            y: correctionPoint(point: data.cutPoint.topLeft.y * (data.heightRatio))
+        )
+        
+        topRight = CGPoint(
+            x: data.cutPoint.topRight.x * (data.widthRatio),
+            y: correctionPoint(point: data.cutPoint.topRight.y * (data.heightRatio))
+        )
+        
+        bottomLeft = CGPoint(
+            x: data.cutPoint.bottomLeft.x * (data.widthRatio),
+            y: correctionPoint(point: data.cutPoint.bottomLeft.y * (data.heightRatio))
+        )
+        
+        bottomRight = CGPoint(
+            x: data.cutPoint.bottomRight.x * (data.widthRatio),
+            y: correctionPoint(point: data.cutPoint.bottomRight.y * (data.heightRatio))
+        )
+    }
+    
 }

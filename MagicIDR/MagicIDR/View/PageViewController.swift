@@ -108,6 +108,12 @@ extension PageViewController {
     
     @objc private func touchUpInsideCropButton() {
         let repoint = RepointViewController()
+        
+        guard let data = photoDataManager?.loadPhotoData() else {
+            return
+        }
+        
+        repoint.configurePhotoData(data[nowIndex])
         self.navigationController?.pushViewController(repoint, animated: true)
     }
     

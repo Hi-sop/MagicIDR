@@ -139,13 +139,12 @@ extension RecordViewController {
 extension RecordViewController {
     private func configureToolBar() {
         let leftItem = UIBarButtonItem(
-            image: UIImage(systemName: "trash.fill"),
+            image: UIImage(systemName: "photo"),
             style: .plain,
             target: nil,
             action: nil
         )
         leftItem.tintColor = UIColor.white
-        //썸네일로 변경할 것
         
         let centerItem = UIBarButtonItem(
             image: UIImage(systemName: "camera.aperture"),
