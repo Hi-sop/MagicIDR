@@ -15,9 +15,9 @@
 		B9D3944D2B6D4C620035D513 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B9D3944C2B6D4C620035D513 /* Assets.xcassets */; };
 		B9D394502B6D4C620035D513 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B9D3944E2B6D4C620035D513 /* LaunchScreen.storyboard */; };
 		B9D394592B6D4D500035D513 /* RecordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D394582B6D4D500035D513 /* RecordViewController.swift */; };
-		B9D3945B2B6D4D720035D513 /* SampleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D3945A2B6D4D720035D513 /* SampleViewController.swift */; };
 		B9D3945D2B6D4D850035D513 /* RepointViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D3945C2B6D4D850035D513 /* RepointViewController.swift */; };
 		B9E2EF2A2B74C86900E9E55B /* DetectorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9E2EF292B74C86900E9E55B /* DetectorView.swift */; };
+		B9F9BEF82B7B820400AC9F57 /* PageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9F9BEF72B7B820400AC9F57 /* PageViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,9 +31,9 @@
 		B9D3944F2B6D4C620035D513 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B9D394512B6D4C620035D513 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B9D394582B6D4D500035D513 /* RecordViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordViewController.swift; sourceTree = "<group>"; };
-		B9D3945A2B6D4D720035D513 /* SampleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SampleViewController.swift; sourceTree = "<group>"; };
 		B9D3945C2B6D4D850035D513 /* RepointViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepointViewController.swift; sourceTree = "<group>"; };
 		B9E2EF292B74C86900E9E55B /* DetectorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetectorView.swift; sourceTree = "<group>"; };
+		B9F9BEF72B7B820400AC9F57 /* PageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -82,7 +82,7 @@
 			children = (
 				B9D394472B6D4C610035D513 /* MainViewController.swift */,
 				B9D394582B6D4D500035D513 /* RecordViewController.swift */,
-				B9D3945A2B6D4D720035D513 /* SampleViewController.swift */,
+				B9F9BEF72B7B820400AC9F57 /* PageViewController.swift */,
 				B9D3945C2B6D4D850035D513 /* RepointViewController.swift */,
 			);
 			path = View;
@@ -169,10 +169,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				B9D394482B6D4C610035D513 /* MainViewController.swift in Sources */,
+				B9F9BEF82B7B820400AC9F57 /* PageViewController.swift in Sources */,
 				B9BB87492B7A00C000B02523 /* UIColor+.swift in Sources */,
 				B9D394442B6D4C610035D513 /* AppDelegate.swift in Sources */,
 				B9D394462B6D4C610035D513 /* SceneDelegate.swift in Sources */,
-				B9D3945B2B6D4D720035D513 /* SampleViewController.swift in Sources */,
 				B9D3945D2B6D4D850035D513 /* RepointViewController.swift in Sources */,
 				B9BB874D2B7AFB6600B02523 /* PhotoDataManager.swift in Sources */,
 				B9E2EF2A2B74C86900E9E55B /* DetectorView.swift in Sources */,

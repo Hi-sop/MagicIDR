@@ -56,13 +56,13 @@ final class RecordViewController: UIViewController {
     }
     
     private func pushSampleViewContoller() {
-        let sampleViewContoller = SampleViewController()
+        let pageViewContoller = PageViewController()
         guard let photoDataManager = self.photoDataManager else {
             return
         }
         
-        sampleViewContoller.configurePhotoManager(photoDataManager)
-        self.navigationController?.pushViewController(sampleViewContoller, animated: true) //temp
+        pageViewContoller.configurePhotoManager(photoDataManager)
+        self.navigationController?.pushViewController(pageViewContoller, animated: true) //temp
     }
     
     func configurePhotoManager(_ manager: PhotoDataManager) {
