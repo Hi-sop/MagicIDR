@@ -15,7 +15,7 @@ struct CutPoint {
 }
 
 final class PhotoData {
-    let image: CIImage
+    var image: CIImage
     let cutPoint: CutPoint
     
     init(image: CIImage, cutPoint: CutPoint) {

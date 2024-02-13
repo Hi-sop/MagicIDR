@@ -74,8 +74,8 @@ extension PageViewController {
         let leftItem = UIBarButtonItem(
             image: UIImage(systemName: "trash.fill"),
             style: .plain,
-            target: nil,
-            action: nil
+            target: self,
+            action: #selector(touchUpLeftItemButton)
         )
         leftItem.tintColor = UIColor.white
         
@@ -120,8 +120,39 @@ extension PageViewController {
             return
         }
         
-        let rotateImage = uiImage.rotateLeftClock()
+        guard let rotateImage = uiImage.rotateLeftClock(),
+              let ciImage = rotateImage.ciImage
+        else {
+            return
+        }
         imageView.image = rotateImage
+        
+        guard let data = photoDataManager?.loadPhotoData() else {
+            return
+        }
+        data[nowIndex].image = ciImage
+    }
+    
+    @objc private func touchUpLeftItemButton() {
+        photoDataManager?.removePhotoData(at: nowIndex)
+        
+        guard let data = photoDataManager?.loadPhotoData() else {
+            return
+        }
+        
+        if data.count <= 0 {
+            self.navigationController?.popViewController(animated: true)
+            return
+        }
+        
+        pageViewContollers = []
+        subViewContollerInit()
+        
+        if data.count == nowIndex {
+            nowIndex -= 1
+        }
+        
+        navigationItem.titleView = makeCenterItem(index: nowIndex + 1)
     }
 }
 
