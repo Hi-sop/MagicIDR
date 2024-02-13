@@ -10,6 +10,7 @@ import UIKit
 
 // MARK: - Configure / Init
 final class PageViewController: UIPageViewController {
+    private var nowIndex = 0
     private var photoDataManager: PhotoDataManager?
     private var pageViewContollers: [UIViewController] = []
     
@@ -78,12 +79,11 @@ extension PageViewController {
         )
         leftItem.tintColor = UIColor.white
         
-        //회전기능 추가 필요
         let centerItem = UIBarButtonItem(
             title: "반시계",
             style: .plain,
-            target: nil,
-            action: nil
+            target: self,
+            action: #selector(touchUpCenterItemButton)
         )
         centerItem.tintColor = UIColor.white
         
@@ -110,6 +110,19 @@ extension PageViewController {
         let repoint = RepointViewController()
         self.navigationController?.pushViewController(repoint, animated: true)
     }
+    
+    @objc private func touchUpCenterItemButton() {
+        guard let imageView = pageViewContollers[nowIndex].view.subviews.first as? UIImageView else {
+            return
+        }
+        
+        guard let uiImage = imageView.image else {
+            return
+        }
+        
+        let rotateImage = uiImage.rotateLeftClock()
+        imageView.image = rotateImage
+    }
 }
 
 // MARK: PageDelegate
@@ -123,6 +136,7 @@ extension PageViewController: UIPageViewControllerDelegate, UIPageViewController
         guard previousIndex >= 0 else {
             return nil
         }
+        self.nowIndex = previousIndex
         navigationItem.titleView = makeCenterItem(index: previousIndex + 1)
         
         return pageViewContollers[previousIndex]
@@ -138,6 +152,7 @@ extension PageViewController: UIPageViewControllerDelegate, UIPageViewController
             return nil
         }
         
+        self.nowIndex = nextIndex
         navigationItem.titleView = makeCenterItem(index: nextIndex + 1)
         
         return pageViewContollers[nextIndex]
@@ -150,9 +165,12 @@ extension PageViewController {
             return
         }
         
-        for _ in 1...data.count {
+        for index in 1...data.count {
             let viewController = UIViewController()
-            let imageView = UIView()
+            let imageView = UIImageView()
+            
+            imageView.image = imageViewInit(data: data[index - 1])
+            imageView.contentMode = .scaleAspectFit
             
             viewController.view.addSubview(imageView)
             imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -172,6 +190,48 @@ extension PageViewController {
         dataSource = self
         delegate = self
     }
+    
+    private func imageViewInit(data: PhotoData) -> UIImage {
+        guard let filter = CIFilter(name: "CIPerspectiveCorrection") else {
+            return UIImage()
+        }
+    
+        filter.setValue(CIVector(cgPoint: data.cutPoint.topLeft), forKey: "inputTopLeft")
+        filter.setValue(CIVector(cgPoint: data.cutPoint.topRight), forKey: "inputTopRight")
+        filter.setValue(CIVector(cgPoint: data.cutPoint.bottomLeft), forKey: "inputBottomLeft")
+        filter.setValue(CIVector(cgPoint: data.cutPoint.bottomRight), forKey: "inputBottomRight")
+        filter.setValue(data.image, forKey: kCIInputImageKey)
 
+        guard let outputImage = filter.outputImage else {
+            return UIImage()
+        }
+        
+        let flippedImage = UIImage(ciImage: outputImage, scale: UIScreen.main.scale, orientation: .upMirrored)
+
+        guard let ciImage = flippedImage.ciImage else {
+            return UIImage()
+        }
+        
+        return UIImage(ciImage: ciImage, scale: UIScreen.main.scale, orientation: .downMirrored)
+    }
+}
+
+extension UIImage {
+    func rotateLeftClock() -> UIImage? {
+        let radians = CGFloat(-90 * Double.pi / 180)
+        let rotatedSize = CGRect(origin: .zero, size: size)
+            .applying(CGAffineTransform(rotationAngle: radians))
+            .integral.size
+        UIGraphicsBeginImageContext(rotatedSize)
+        if let context = UIGraphicsGetCurrentContext() {
+            context.translateBy(x: rotatedSize.width / 2, y: rotatedSize.height / 2)
+            context.rotate(by: radians)
+            draw(in: CGRect(x: -size.width / 2, y: -size.height / 2, width: size.width, height: size.height))
+            let rotatedImage = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+            return rotatedImage
+        }
+        return nil
+    }
 }
 
