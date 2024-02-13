@@ -30,11 +30,12 @@ final class RecordViewController: UIViewController {
         super.viewDidLoad()
         
         configureNavigationBar()
+        configureToolBar()
         configureView()
     }
     
     override func viewWillAppear(_ animated: Bool) {
-        navigationController?.isToolbarHidden = true
+        navigationController?.isToolbarHidden = false
 
         DispatchQueue.global().async {
             self.captureSession.startRunning()
@@ -113,6 +114,47 @@ extension RecordViewController {
     @objc private func touchUpInsideRightButton() {
         self.autofind.toggle()
     }
+}
+
+// MARK: - ToolBar
+extension RecordViewController {
+    private func configureToolBar() {
+        let leftItem = UIBarButtonItem(
+            image: UIImage(systemName: "trash.fill"),
+            style: .plain,
+            target: nil,
+            action: nil
+        )
+        leftItem.tintColor = UIColor.white
+        //썸네일로 변경할 것
+        
+        let centerItem = UIBarButtonItem(
+            image: UIImage(systemName: "camera.aperture"),
+            style: .plain,
+            target: nil,
+            action: nil
+        )
+        centerItem.tintColor = UIColor.white
+        
+        let rightItem = UIBarButtonItem(
+            title: "저장",
+            style: .plain,
+            target: nil,
+            action: nil
+        )
+        rightItem.tintColor = UIColor.white
+        
+        let space = UIBarButtonItem(barButtonSystemItem: .fixedSpace, target: nil, action: nil)
+        space.width = 25
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        
+        let items = [space, leftItem, flexibleSpace, centerItem, flexibleSpace, rightItem, space]
+        self.toolbarItems = items
+        
+        navigationController?.toolbar.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        navigationController?.isToolbarHidden = false
+    }
+    
 }
 
 // MARK: - CameraView

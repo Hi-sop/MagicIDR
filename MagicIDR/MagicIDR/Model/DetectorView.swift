@@ -11,6 +11,7 @@ final class DetectorView: UIView {
     private var rectangleFeature: CIRectangleFeature?
     private var widthRatio: CGFloat?
     private var heightRatio: CGFloat?
+    private var correction: CGFloat = 115
     
     override func draw(_ rect: CGRect) {
         super.draw(rect)
@@ -67,15 +68,15 @@ final class DetectorView: UIView {
     private func correctionPoint(point: CGFloat) -> CGFloat {
         let frameHeight = self.frame.height
         
-        if point - 90 < 0 {
+        if point - correction < 0 {
             return CGFloat(0)
         }
         
-        if point - 90 > frameHeight {
+        if point - correction > frameHeight {
             return CGFloat(frameHeight)
         }
         
-        return CGFloat(point - 90)
+        return CGFloat(point - correction)
     }
     
     func setRectangle(rectangleFeature: CIRectangleFeature, widthRatio: CGFloat, heightRatio: CGFloat) {
